@@ -1,5 +1,5 @@
 import 'package:asakatsu/UIs/rootProvider.dart';
-import 'package:asakatsu/UIs/setAlermTimePatternUI.dart';
+import 'package:asakatsu/UIs/viewAlarmTimePatternUI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:core';
@@ -58,7 +58,7 @@ class Root extends ConsumerWidget {
     // }else{
       switch (selectedIndex) {
         case 0:
-          return const SetAlermTimePattern();
+          return const ViewAlarmTimePattern();
         // case 1:
         //   return SearchUsersMainPage();
         // case 2:
@@ -66,7 +66,7 @@ class Root extends ConsumerWidget {
         // case 3:
         //   return LessonListRoot();
         default:
-          return SetAlermTimePattern();
+          return ViewAlarmTimePattern();
       }
 
     // }
