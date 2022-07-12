@@ -7,12 +7,14 @@ part 'alarmEntityIsar.g.dart';
 class Alarm {
   Alarm(
       this.id,
+      this.patternId,
       this.time,
       this.valid,
       );
 
   @Id()
   int? id;
+  int patternId;
   DateTime time;
   bool valid;
 }

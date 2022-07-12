@@ -1,29 +1,45 @@
 import 'package:isar/isar.dart';
-import '../entityIsar/AlarmEntityIsar.dart';
+import '../entityIsar/alarmEntityIsar.dart';
 
-Future<Alarm?> selectIsarAlarm() async {
+Future<Alarm?> selectIsarAlarm(int id) async {
 
   var isarInstance = Isar.getInstance();
-  Alarm? resultAlarm;
+  Alarm? resultAlarmPattern;
   await isarInstance?.writeTxn((isar) async {
-    List<Alarm> resultList = await isar.alarms.filter().idGreaterThan(-1).findAll();
+    List<Alarm> resultList = await isar.alarms.filter().idEqualTo(id).findAll();
 
     if(resultList.isEmpty){
-      resultAlarm = null;
+      resultAlarmPattern = null;
     }else{
-      resultAlarm = resultList[0];
+      resultAlarmPattern = resultList[0];
     }
   });
-  return resultAlarm;
+  return resultAlarmPattern;
 }
 
+
+Future<List<Alarm>> selectIsarAlarmByPatternId(int patternId) async {
+
+  var isarInstance = Isar.getInstance();
+  List<Alarm> resultListReturn=[];
+  await isarInstance?.writeTxn((isar) async {
+    List<Alarm> resultList = await isar.alarms.filter().patternIdEqualTo(patternId).sortByTime().findAll();
+
+    resultListReturn=resultList;
+  });
+  return resultListReturn;
+}
+
+
 Future<int> insertIsarAlarm({
+  required int patternId,
   required DateTime time,
   required bool valid,
 }) async {
 
   Alarm insertAlarm= Alarm(
     null,
+    patternId,
     time,
     valid,
   );
@@ -42,12 +58,14 @@ Future<int> insertIsarAlarm({
 
 Future<int> updateIsarAlarm({
   required int id,
+  required int patternId,
   required DateTime time,
   required bool valid,
 }) async {
 
   Alarm updateAlarm= Alarm(
     id,
+    patternId,
     time,
     valid,
   );

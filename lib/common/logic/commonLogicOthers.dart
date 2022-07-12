@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 
 import '../commonValues.dart';
 import '../otherClass/commonHexColor.dart';
@@ -61,6 +62,17 @@ IconData commonGenderIcon(String genderCode){
       return Icons.circle;
     default:
       return Icons.lock;
+  }
+
+}
+
+
+String zeroAddTo2Digit(String input){
+  if(input.length==1){
+    return "0"+input;
+
+  }else{
+    return input;
   }
 
 }

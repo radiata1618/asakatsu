@@ -1,7 +1,8 @@
+import 'package:asakatsu/entityIsar/alarmEntityIsar.dart';
+import 'package:asakatsu/entityIsar/alarmPatternEntityIsar.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../entityIsar/settingEntityIsar.dart';
 
 Future<Isar?> openIsarInstances() async {
 
@@ -9,7 +10,7 @@ Future<Isar?> openIsarInstances() async {
   final dir = await getApplicationSupportDirectory();
   if (isarInstance == null) {
     await Isar.open(
-      schemas: [SettingSchema],
+      schemas: [AlarmPatternSchema,AlarmSchema],
       directory: dir.path,
       inspector: true,
     );
@@ -17,7 +18,7 @@ Future<Isar?> openIsarInstances() async {
   } else {
     if (!isarInstance.isOpen) {
       await Isar.open(
-        schemas: [SettingSchema],
+        schemas: [AlarmPatternSchema,AlarmSchema],
         directory: dir.path,
         inspector: true,
       );

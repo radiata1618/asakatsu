@@ -1,12 +1,13 @@
 import 'package:isar/isar.dart';
 import '../entityIsar/alarmPatternEntityIsar.dart';
+import 'commonIsar.dart';
 
-Future<AlarmPattern?> selectIsarAlarmPattern() async {
+Future<AlarmPattern?> selectIsarAlarmPattern(int id) async {
 
   var isarInstance = Isar.getInstance();
   AlarmPattern? resultAlarmPattern;
   await isarInstance?.writeTxn((isar) async {
-    List<AlarmPattern> resultList = await isar.alarmPatterns.filter().idGreaterThan(-1).findAll();
+    List<AlarmPattern> resultList = await isar.alarmPatterns.filter().idEqualTo(id).findAll();
 
     if(resultList.isEmpty){
       resultAlarmPattern = null;
@@ -15,6 +16,20 @@ Future<AlarmPattern?> selectIsarAlarmPattern() async {
     }
   });
   return resultAlarmPattern;
+}
+
+
+Future<List<AlarmPattern>> selectIsarAllAlarmPattern() async {
+
+  await openIsarInstances();
+  var isarInstance = Isar.getInstance();
+  List<AlarmPattern> resultListReturn=[];
+  await isarInstance?.writeTxn((isar) async {
+    List<AlarmPattern> resultList = await isar.alarmPatterns.where().findAll();
+
+    resultListReturn=resultList;
+  });
+  return resultListReturn;
 }
 
 Future<int> insertIsarAlarmPattern({
