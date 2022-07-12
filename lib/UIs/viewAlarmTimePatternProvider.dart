@@ -7,10 +7,10 @@ final viewAlarmTimePatternProvider = ChangeNotifierProvider(
 );
 
 class ViewAlarmTimePatternProvider extends ChangeNotifier {
-  // int _patternId=-1;
+  int _dummyVariableForRebuild=0;
   // String _patternName="";
   // //
-  // int get patternId=>_patternId;
+  int get dummyVariableForRebuild=>_dummyVariableForRebuild;
   // String get patternName=>_patternName;
   // setPatternName(String nameValue){
   //   _patternName=nameValue;
@@ -23,6 +23,7 @@ class ViewAlarmTimePatternProvider extends ChangeNotifier {
   // }
 
   void rebuildScreen(){
+    _dummyVariableForRebuild=_dummyVariableForRebuild+1;
     notifyListeners();
   }
 }

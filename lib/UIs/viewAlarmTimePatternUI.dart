@@ -28,9 +28,9 @@ class ViewAlarmTimePattern extends ConsumerWidget {
           ref.read(addNewAlarmPatternTimeProvider.notifier).initialize();
           await commonNavigatorPushSlideHorizon(
               context, const AddNewAlarmPatternTime());
-          // ref.read(viewAlarmTimePatternProvider.notifier).rebuildScreen();
+          ref.read(viewAlarmTimePatternProvider.notifier).rebuildScreen();
         },
-        tooltip: 'Increment',
+        tooltip: 'Increment'+ref.watch(viewAlarmTimePatternProvider).dummyVariableForRebuild.toString(),
         child: const Icon(Icons.add),
       ),
     );
@@ -66,6 +66,7 @@ class ViewAlarmTimePattern extends ConsumerWidget {
       onTap:() async{
         await ref.read(setAlarmTimePatternProvider.notifier).initialize(alarmPatternValue.id!);
         commonNavigatorPushSlideHorizon(context, SetAlarmTimePattern());
+        ref.read(viewAlarmTimePatternProvider.notifier).rebuildScreen();
       }
     );
   }

@@ -98,7 +98,21 @@ class SetAlarmTimePattern extends ConsumerWidget {
             ],
           );
         } else {
-          return const SizedBox(height:30,child: Text("No data found"));
+          return Column(
+            children: [
+              commonText16BlackLeft("Edit alarm pattern"),
+              commonTextBoxBordered(
+                  initialValue: ref.watch(setAlarmTimePatternProvider).patternName,
+                  text: 'Pattern name',
+                  onChanged: (String value) async {
+                    ref
+                        .read(setAlarmTimePatternProvider.notifier)
+                        .setPatternName(value);
+                  }),
+              commonVerticalGap(),
+              const SizedBox(height:30,child: Text("Add alarm time")),
+            ],
+          );
         }
       },
     );
