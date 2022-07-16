@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
 import '../entityIsar/alarmEntityIsar.dart';
+import 'commonIsar.dart';
 
 Future<Alarm?> selectIsarAlarm(int id) async {
 
@@ -15,6 +16,30 @@ Future<Alarm?> selectIsarAlarm(int id) async {
     }
   });
   return resultAlarmPattern;
+}
+
+
+
+Future<Alarm?> selectIsarAlarmMostRecent() async {
+
+  await openIsarInstances();
+  var isarInstance = Isar.getInstance();
+  List<Alarm?> resultReturnList=[];
+  await isarInstance?.writeTxn((isar) async {
+    resultReturnList = await isar.alarms.where().sortByNextDateTime().findAll();
+  });
+
+
+  if(resultReturnList.length==0){
+    return null;
+  }
+  for(int i= 0;i<resultReturnList.length;i++){
+    if(resultReturnList[i]!.nextDateTime!=null){
+      return resultReturnList[i]!;
+    }
+  }
+
+  return null;
 }
 
 

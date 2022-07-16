@@ -1,11 +1,14 @@
 import 'dart:isolate';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:asakatsu/UIs/addNewAlarmPatternProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'UIs/rootUI.dart';
+import 'daoIsar/alarmDaoIsar.dart';
+import 'entityIsar/alarmEntityIsar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,15 +25,20 @@ void main() async {
     ),
   );
 
-  const int helloAlarmID = 0;
+  const int callAlarmId = 0;
   await AndroidAlarmManager.periodic(
-      const Duration(minutes: 1), helloAlarmID, printHello);
+      const Duration(minutes: 1), callAlarmId, callAlarm);
 }
 
-void printHello() {
-  final DateTime now = DateTime.now();
-  final int isolateId = Isolate.current.hashCode;
-  print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
+Future<void> callAlarm() async {
+  Alarm? alarm =await selectIsarAlarmMostRecent();
+  if(alarm!=null){
+    if(alarm.nextDateTime!=null){
+      if(alarm.nextDateTime!.isBefore(DateTime.now())){
+        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+      }
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
