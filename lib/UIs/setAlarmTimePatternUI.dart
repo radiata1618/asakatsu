@@ -102,6 +102,7 @@ class SetAlarmTimePattern extends ConsumerWidget {
               child: Row(
                 children: [
                   Expanded(child: commonText16BlackLeft("${zeroAddTo2Digit(alarmValue.time.hour.toString())}:${zeroAddTo2Digit(alarmValue.time.minute.toString())}")),
+                  nextDateDisplay(alarmValue.nextDateTime),
                   IconButton( icon: const Icon(Icons.more_vert),
                     onPressed: (){
                       commonShowOkNgInfoDialog(context, "削除してもよろしいですか？", ()async{
@@ -116,10 +117,19 @@ class SetAlarmTimePattern extends ConsumerWidget {
         ),
         onTap:() async{
           await ref.read(setAlarmTimeProvider.notifier).initialize(2,ref.watch(setAlarmTimePatternProvider).patternId,alarmValue.id);
-          commonNavigatorPushSlideHorizon(context, const SetAlarmTime());
+          await commonNavigatorPushSlideHorizon(context, const SetAlarmTime());
           ref.read(setAlarmTimePatternProvider.notifier).rebuildScreen();
         }
     );
+  }
+}
+
+Widget nextDateDisplay(DateTime? nextDateTime){
+  if(nextDateTime==null){
+    return Container();
+  }else{
+
+    return commonText16BlackLeft("(next date:${zeroAddTo2Digit(nextDateTime.month.toString())}/${zeroAddTo2Digit(nextDateTime.day.toString())})");
   }
 }
 

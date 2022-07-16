@@ -35,6 +35,7 @@ Future<int> insertIsarAlarm({
   required int patternId,
   required DateTime time,
   required bool valid,
+  required DateTime? nextDateTime
 }) async {
 
   Alarm insertAlarm= Alarm(
@@ -42,6 +43,7 @@ Future<int> insertIsarAlarm({
     patternId,
     time,
     valid,
+    nextDateTime
   );
 
   var isarInstance = Isar.getInstance();
@@ -61,6 +63,7 @@ Future<int> updateIsarAlarm({
   required int patternId,
   required DateTime time,
   required bool valid,
+  required DateTime? nextDateTime
 }) async {
 
   Alarm updateAlarm= Alarm(
@@ -68,6 +71,7 @@ Future<int> updateIsarAlarm({
     patternId,
     time,
     valid,
+    nextDateTime
   );
 
   var isarInstance = Isar.getInstance();

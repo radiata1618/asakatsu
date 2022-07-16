@@ -10,6 +10,7 @@ class Alarm {
       this.patternId,
       this.time,
       this.valid,
+      this.nextDateTime
       );
 
   @Id()
@@ -17,4 +18,5 @@ class Alarm {
   int patternId;
   DateTime time;
   bool valid;
+  DateTime? nextDateTime;
 }

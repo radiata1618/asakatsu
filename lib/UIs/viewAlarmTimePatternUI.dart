@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:asakatsu/UIs/addNewAlarmPatternProvider.dart';
 import 'package:asakatsu/UIs/setAlarmTimePatternProvider.dart';
 import 'package:asakatsu/UIs/setAlarmTimePatternUI.dart';
@@ -12,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../common/UI/commonOthersUI.dart';
 import '../common/UI/commonTextUI.dart';
 import '../common/commonValues.dart';
+import '../common/logic/commonLogicAlarm.dart';
 import '../daoIsar/alarmDaoIsar.dart';
 import '../daoIsar/alarmPatternDaoIsar.dart';
 import '../entityIsar/alarmPatternEntityIsar.dart';
@@ -32,6 +31,7 @@ class ViewAlarmTimePattern extends ConsumerWidget {
           ref.read(addNewAlarmPatternTimeProvider.notifier).initialize();
           await commonNavigatorPushSlideHorizon(
               context, const AddNewAlarmPatternTime());
+          await commonNavigatorPushSlideHorizon(context, SetAlarmTimePattern());
           ref.read(viewAlarmTimePatternProvider.notifier).rebuildScreen();
         },
         tooltip: 'Increment'+ref.watch(viewAlarmTimePatternProvider).dummyVariableForRebuild.toString(),
@@ -98,7 +98,7 @@ class ViewAlarmTimePattern extends ConsumerWidget {
       ),
       onTap:() async{
         await ref.read(setAlarmTimePatternProvider.notifier).initialize(alarmPatternValue.id!);
-        commonNavigatorPushSlideHorizon(context, SetAlarmTimePattern());
+        await commonNavigatorPushSlideHorizon(context, SetAlarmTimePattern());
         ref.read(viewAlarmTimePatternProvider.notifier).rebuildScreen();
       }
     );
@@ -147,6 +147,7 @@ Widget daysOfWeekButtonTopPage(String dayName, String dayDisplay, WidgetRef ref,
         GestureDetector(
           onTap: () async{
             await updateIsarAlarmPatternDayOfWeek(alarmPattern: alarmPatternValue, dayName:dayName);
+            await refleshAlarmNextDateTimeByPatternId(alarmPatternValue.id!);
             ref.read(viewAlarmTimePatternProvider.notifier).rebuildScreen();
           },
           child: Container(

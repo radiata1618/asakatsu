@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:asakatsu/daoIsar/alarmPatternDaoIsar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../common/logic/commonLogicAlarm.dart';
 import '../entityIsar/alarmPatternEntityIsar.dart';
 
 final setAlarmTimePatternProvider = ChangeNotifierProvider(
@@ -50,7 +53,7 @@ class SetAlarmTimePatternProvider extends ChangeNotifier {
     _sunday=alarmPattern!.sunday;
   }
 
-  setRepeats(String key){
+  Future<void> setRepeats(String key)async {
     switch(key){
       case "monday":
         _monday=!_monday;
@@ -74,7 +77,8 @@ class SetAlarmTimePatternProvider extends ChangeNotifier {
         _sunday=!_sunday;
         break;
     }
-    updateIsarAlarmPattern(patternName: _patternName, monday: _monday, tuesday: _tuesday, wednesday: _wednesday, thursday: _thursday, friday: _friday, saturday: _saturday, sunday: _sunday, id: _patternId);
+    await updateIsarAlarmPattern(patternName: _patternName, monday: _monday, tuesday: _tuesday, wednesday: _wednesday, thursday: _thursday, friday: _friday, saturday: _saturday, sunday: _sunday, id: _patternId);
+    await refleshAlarmNextDateTimeByPatternId(_patternId);
     notifyListeners();
   }
   getRepeats(String key){

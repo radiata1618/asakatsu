@@ -1,6 +1,7 @@
 import 'package:asakatsu/UIs/addNewAlarmPatternProvider.dart';
 import 'package:asakatsu/UIs/setAlarmTimePatternProvider.dart';
 import 'package:asakatsu/UIs/setAlarmTimePatternUI.dart';
+import 'package:asakatsu/UIs/viewAlarmTimePatternProvider.dart';
 import 'package:asakatsu/common/UI/commonButtonUI.dart';
 import 'package:asakatsu/daoIsar/alarmPatternDaoIsar.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,8 +34,7 @@ class AddNewAlarmPatternTime extends ConsumerWidget {
             commonButtonSecondaryColorRound(text: "Save", onPressed: ()async{
               int patternId = await insertIsarAlarmPattern(patternName: ref.watch(addNewAlarmPatternTimeProvider).patternName, monday: false, tuesday: false, wednesday: false, thursday: false, friday: false, saturday: false, sunday: false);
               await ref.read(setAlarmTimePatternProvider.notifier).initialize(patternId);
-              commonNavigatorPushPushSlideHorizonReplacement(context, SetAlarmTimePattern());
-
+              Navigator.pop(context);
             })
           ],
         )
