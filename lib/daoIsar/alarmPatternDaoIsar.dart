@@ -113,3 +113,52 @@ Future<int> deleteIsarAlarmPattern(int id) async {
   return returnInt;
 
 }
+
+Future<int> updateIsarAlarmPatternDayOfWeek({
+  required AlarmPattern alarmPattern,
+  required String dayName
+}) async {
+  bool tmpMonday=alarmPattern.monday;
+  bool tmpTueday=alarmPattern.tuesday;
+  bool tmpWednesday=alarmPattern.wednesday;
+  bool tmpThursday=alarmPattern.thursday;
+  bool tmpFriday=alarmPattern.friday;
+  bool tmpSaturday=alarmPattern.saturday;
+  bool tmpSunday=alarmPattern.sunday;
+
+  switch(dayName){
+    case "monday":
+      tmpMonday =  !tmpMonday;
+      break;
+    case "tuesday":
+      tmpTueday =  !tmpTueday;
+      break;
+    case "wednesday":
+      tmpWednesday =  !tmpWednesday;
+      break;
+    case "thursday":
+      tmpThursday =  !tmpThursday;
+      break;
+    case "friday":
+      tmpFriday =  !tmpFriday;
+      break;
+    case "saturday":
+      tmpSaturday =  !tmpSaturday;
+      break;
+    case "sunday":
+      tmpSunday =  !tmpSunday;
+      break;
+  }
+
+  return await updateIsarAlarmPattern(
+      id: alarmPattern.id!,
+      patternName: alarmPattern.patternName!,
+      monday: tmpMonday,
+      tuesday: tmpTueday,
+      wednesday: tmpWednesday,
+      thursday: tmpThursday,
+      friday: tmpFriday,
+      saturday: tmpSaturday,
+      sunday: tmpSunday);
+
+}

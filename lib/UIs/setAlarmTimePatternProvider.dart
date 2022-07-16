@@ -41,6 +41,13 @@ class SetAlarmTimePatternProvider extends ChangeNotifier {
     _patternId=patternIdValue;
     AlarmPattern? alarmPattern=await selectIsarAlarmPattern(_patternId);
     _patternName=alarmPattern!.patternName;
+    _monday=alarmPattern!.monday;
+    _tuesday=alarmPattern!.tuesday;
+    _wednesday=alarmPattern!.wednesday;
+    _thursday=alarmPattern!.thursday;
+    _friday=alarmPattern!.friday;
+    _saturday=alarmPattern!.saturday;
+    _sunday=alarmPattern!.sunday;
   }
 
   setRepeats(String key){

@@ -29,33 +29,12 @@ class SetAlarmTimePattern extends ConsumerWidget {
         onPressed: () async {
           await ref.read(setAlarmTimeProvider.notifier).initialize(1, ref.watch(setAlarmTimePatternProvider).patternId, null);
           await commonNavigatorPushSlideHorizon(context, const SetAlarmTime());
-          ref.read(setAlarmTimeProvider.notifier).rebuildScreen();
+          ref.read(setAlarmTimePatternProvider.notifier).rebuildScreen();
         },
         tooltip: 'Increment'+ref.watch(setAlarmTimePatternProvider).dummyVariableForRebuild.toString(),
         child: const Icon(Icons.add),
       ),
     );
-    // return commonScaffoldScroll(
-    //   context,
-    //   ref,
-    //   MainAxisAlignment.spaceBetween,
-    //   [
-    //     Column(
-    //       children: [
-    //         commonText16BlackLeft("Edit alarm pattern"),
-    //         commonTextBoxBordered(
-    //           initialValue: ref.watch(setAlarmTimePatternProvider).patternName,
-    //             text: 'Pattern name',
-    //             onChanged: (String value) async {
-    //               ref
-    //                   .read(setAlarmTimePatternProvider.notifier)
-    //                   .setPatternName(value);
-    //             }),
-    //         commonButtonSecondaryColorRound(text: "Save", onPressed: () {})
-    //       ],
-    //     )
-    //   ],
-    // );
   }
   Widget alarmList(BuildContext context, WidgetRef ref) {
     return FutureBuilder(
@@ -77,17 +56,7 @@ class SetAlarmTimePattern extends ConsumerWidget {
                         .setPatternName(value);
                   }),
               commonVerticalGap(),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    daysOfWeekButton("sunday", "S", ref),
-                    daysOfWeekButton("monday", "M", ref),
-                    daysOfWeekButton("tuesday", "T", ref),
-                    daysOfWeekButton("wednesday", "W", ref),
-                    daysOfWeekButton("thursday", "T", ref),
-                    daysOfWeekButton("friday", "F", ref),
-                    daysOfWeekButton("saturday", "S", ref),
-                  ]),
+              rowOfdaysOfWeekButton(ref),
               Expanded(
                 child: ListView.builder(
                     itemCount: snapshot.data!.length,
@@ -95,7 +64,9 @@ class SetAlarmTimePattern extends ConsumerWidget {
                       return alarmListUnit(snapshot.data![index],context,ref);
                     }),
               ),
-            commonButtonSecondaryColorRound(text: "Save", onPressed: () {})
+            commonButtonSecondaryColorRound(text: "Save", onPressed: () {
+              Navigator.pop(context);
+            })
             ],
           );
         } else {
@@ -111,7 +82,12 @@ class SetAlarmTimePattern extends ConsumerWidget {
                         .setPatternName(value);
                   }),
               commonVerticalGap(),
+              rowOfdaysOfWeekButton(ref),
+              commonVerticalGap(),
               const SizedBox(height:30,child: Text("Add alarm time")),
+              commonButtonSecondaryColorRound(text: "Save", onPressed: () {
+                Navigator.pop(context);
+              })
             ],
           );
         }
@@ -145,6 +121,21 @@ class SetAlarmTimePattern extends ConsumerWidget {
         }
     );
   }
+}
+
+Widget rowOfdaysOfWeekButton(WidgetRef ref){
+  return
+    Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          daysOfWeekButton("sunday", "S", ref),
+          daysOfWeekButton("monday", "M", ref),
+          daysOfWeekButton("tuesday", "T", ref),
+          daysOfWeekButton("wednesday", "W", ref),
+          daysOfWeekButton("thursday", "T", ref),
+          daysOfWeekButton("friday", "F", ref),
+          daysOfWeekButton("saturday", "S", ref),
+        ]);
 }
 
 Widget daysOfWeekButton(String dayName, String dayDisplay, WidgetRef ref) {
