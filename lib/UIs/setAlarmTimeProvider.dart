@@ -8,6 +8,8 @@ final setAlarmTimeProvider = ChangeNotifierProvider(
 );
 
 class SetAlarmTimeProvider extends ChangeNotifier {
+  int _dummyVariableForRebuild=0;
+  int get dummyVariableForRebuild=>_dummyVariableForRebuild;
   // String _description = "";
   // String _roomName = "";
   DateTime _alarmTime=DateTime(0,0,0,7,0,0);
@@ -43,5 +45,10 @@ class SetAlarmTimeProvider extends ChangeNotifier {
     }else{
       await updateIsarAlarm(patternId: _alarmPatternId, time: _alarmTime, valid: true, id: _alarmId);
     }
+  }
+
+  void rebuildScreen(){
+    _dummyVariableForRebuild=_dummyVariableForRebuild+1;
+    notifyListeners();
   }
 }

@@ -27,34 +27,35 @@ class SetAlarmTimePattern extends ConsumerWidget {
       body: alarmList( context,  ref),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await ref.read(setAlarmTimeProvider.notifier).initialize(1, 1, null);
-          commonNavigatorPushSlideHorizon(context, const SetAlarmTime());
+          await ref.read(setAlarmTimeProvider.notifier).initialize(1, ref.watch(setAlarmTimePatternProvider).patternId, null);
+          await commonNavigatorPushSlideHorizon(context, const SetAlarmTime());
+          ref.read(setAlarmTimeProvider.notifier).rebuildScreen();
         },
-        tooltip: 'Increment',
+        tooltip: 'Increment'+ref.watch(setAlarmTimePatternProvider).dummyVariableForRebuild.toString(),
         child: const Icon(Icons.add),
       ),
     );
-    return commonScaffoldScroll(
-      context,
-      ref,
-      MainAxisAlignment.spaceBetween,
-      [
-        Column(
-          children: [
-            commonText16BlackLeft("Edit alarm pattern"),
-            commonTextBoxBordered(
-              initialValue: ref.watch(setAlarmTimePatternProvider).patternName,
-                text: 'Pattern name',
-                onChanged: (String value) async {
-                  ref
-                      .read(setAlarmTimePatternProvider.notifier)
-                      .setPatternName(value);
-                }),
-            commonButtonSecondaryColorRound(text: "Save", onPressed: () {})
-          ],
-        )
-      ],
-    );
+    // return commonScaffoldScroll(
+    //   context,
+    //   ref,
+    //   MainAxisAlignment.spaceBetween,
+    //   [
+    //     Column(
+    //       children: [
+    //         commonText16BlackLeft("Edit alarm pattern"),
+    //         commonTextBoxBordered(
+    //           initialValue: ref.watch(setAlarmTimePatternProvider).patternName,
+    //             text: 'Pattern name',
+    //             onChanged: (String value) async {
+    //               ref
+    //                   .read(setAlarmTimePatternProvider.notifier)
+    //                   .setPatternName(value);
+    //             }),
+    //         commonButtonSecondaryColorRound(text: "Save", onPressed: () {})
+    //       ],
+    //     )
+    //   ],
+    // );
   }
   Widget alarmList(BuildContext context, WidgetRef ref) {
     return FutureBuilder(
@@ -122,11 +123,25 @@ class SetAlarmTimePattern extends ConsumerWidget {
         child: Card(
           child: SizedBox(
               height:50,
-              child: commonText16BlackLeft("${zeroAddTo2Digit(alarmValue.time.hour.toString())}:${zeroAddTo2Digit(alarmValue.time.minute.toString())}")),
+              child: Row(
+                children: [
+                  Expanded(child: commonText16BlackLeft("${zeroAddTo2Digit(alarmValue.time.hour.toString())}:${zeroAddTo2Digit(alarmValue.time.minute.toString())}")),
+                  IconButton( icon: const Icon(Icons.more_vert),
+                    onPressed: (){
+                      commonShowOkNgInfoDialog(context, "削除してもよろしいですか？", ()async{
+                        await deleteIsarAlarmById(alarmValue.id!);
+                        Navigator.pop(context);
+                        ref.read(setAlarmTimePatternProvider.notifier).rebuildScreen();
+                      });
+                    },)
+
+                ],
+              )),
         ),
         onTap:() async{
           await ref.read(setAlarmTimeProvider.notifier).initialize(2,ref.watch(setAlarmTimePatternProvider).patternId,alarmValue.id);
-          commonNavigatorPushSlideHorizon(context, SetAlarmTime());
+          commonNavigatorPushSlideHorizon(context, const SetAlarmTime());
+          ref.read(setAlarmTimePatternProvider.notifier).rebuildScreen();
         }
     );
   }

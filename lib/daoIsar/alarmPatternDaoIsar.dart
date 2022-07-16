@@ -102,12 +102,12 @@ Future<int> updateIsarAlarmPattern({
 
 }
 
-Future<int> deleteIsarAlarmPattern() async {
+Future<int> deleteIsarAlarmPattern(int id) async {
 
   int returnInt=0;
   var isarInstance = Isar.getInstance();
   await isarInstance?.writeTxn((isar) async {
-    returnInt = await isar.alarmPatterns.filter().idGreaterThan(-1).deleteAll();
+    returnInt = await isar.alarmPatterns.filter().idEqualTo(id).deleteAll();
   });
 
   return returnInt;

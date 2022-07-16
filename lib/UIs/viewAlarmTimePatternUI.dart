@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../common/UI/commonOthersUI.dart';
 import '../common/UI/commonTextUI.dart';
+import '../daoIsar/alarmDaoIsar.dart';
 import '../daoIsar/alarmPatternDaoIsar.dart';
 import '../entityIsar/alarmPatternEntityIsar.dart';
 import 'addNewAlarmPatternUI.dart';
@@ -60,8 +61,22 @@ class ViewAlarmTimePattern extends ConsumerWidget {
     return GestureDetector(
       child: Card(
         child: SizedBox(
-            height:50,
-            child: commonText16BlackLeft(alarmPatternValue.patternName)),
+          height:50,
+          child: Row(
+            children: [
+              Expanded(child: commonText16BlackLeft(alarmPatternValue.patternName)),
+              IconButton( icon: const Icon(Icons.more_vert),
+                onPressed: (){
+                commonShowOkNgInfoDialog(context, "削除してもよろしいですか？", ()async{
+                  await deleteIsarAlarmPattern(alarmPatternValue.id!);
+                  await deleteIsarAlarmByPatternId(alarmPatternValue.id!);
+                  Navigator.pop(context);
+                  ref.read(viewAlarmTimePatternProvider.notifier).rebuildScreen();
+                });
+                },)
+            ],
+          ),
+        ),
       ),
       onTap:() async{
         await ref.read(setAlarmTimePatternProvider.notifier).initialize(alarmPatternValue.id!);

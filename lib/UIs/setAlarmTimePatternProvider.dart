@@ -19,6 +19,7 @@ class SetAlarmTimePatternProvider extends ChangeNotifier {
   bool _friday=false;
   bool _saturday=false;
   bool _sunday=false;
+  int _dummyVariableForRebuild=0;
 
   int get patternId=>_patternId;
   String get patternName=>_patternName;
@@ -29,6 +30,9 @@ class SetAlarmTimePatternProvider extends ChangeNotifier {
   bool get friday=>_friday;
   bool get saturday=>_saturday;
   bool get sunday=>_sunday;
+  int get dummyVariableForRebuild=>_dummyVariableForRebuild;
+
+
   setPatternName(String nameValue){
     _patternName=nameValue;
   }
@@ -84,4 +88,10 @@ class SetAlarmTimePatternProvider extends ChangeNotifier {
         return _sunday;
     }
   }
+
+  void rebuildScreen(){
+    _dummyVariableForRebuild=_dummyVariableForRebuild+1;
+    notifyListeners();
+  }
+
 }
